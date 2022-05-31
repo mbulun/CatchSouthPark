@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "673726444105",
+    "project_id": "catchthesouthpark",
+    "storage_bucket": "catchthesouthpark.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673726444105:android:f7f346ea0accdb2642c598",
+        "android_client_info": {
+          "package_name": "com.postmyth.a9_kotlinkenny"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673726444105-dlis94pk5eg14cjibu34go47p1iqufki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDh-IowXDrXDClWt1v01JtR-oE8AIfVAec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673726444105-dlis94pk5eg14cjibu34go47p1iqufki.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

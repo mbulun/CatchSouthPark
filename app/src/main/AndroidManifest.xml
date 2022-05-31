@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.postmyth.a9_kotlinkenny">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/southpark"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/southpark"
+        android:supportsRtl="true"
+        android:name=".ApplicationClass"
+        android:theme="@style/Theme.9KotlinKenny">
+
+        <activity
+            android:name=".ScoresList"
+            android:exported="false" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8944524190558053~7732007984" />
+
+        <activity
+            android:name=".GameScreen"
+            android:exported="false" />
+
+        <activity
+            android:name=".LoginPage"
+            android:exported="false"/>
+
+        <activity
+            android:name=".SplashScreen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+    </application>
+
+</manifest>
