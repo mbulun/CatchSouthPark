@@ -82,8 +82,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
         } else if (statusChar) {
-            Toast.makeText(this@MainActivity, "Hey ! Süreyi Seçmeyi Unuttun", Toast.LENGTH_LONG)
-                .show()
+            Toast.makeText(
+                this@MainActivity,
+                "Hey ! Süreyi Seçmeyi Unuttun",
+                Toast.LENGTH_LONG
+            ).show()
         } else {
             Toast.makeText(
                 this@MainActivity,
