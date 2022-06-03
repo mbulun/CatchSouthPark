@@ -1,10 +1,16 @@
 package com.postmyth.a9_kotlinkenny
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
+import android.util.DisplayMetrics
+import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
+import android.widget.Scroller
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -23,7 +29,7 @@ class LoginPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_page)
         supportActionBar?.hide()
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.black))
+        window.statusBarColor = ContextCompat.getColor(this, R.color.black)
 
         auth = Firebase.auth
         db = Firebase.firestore
@@ -66,6 +72,9 @@ class LoginPage : AppCompatActivity() {
         if(mail.isEmpty() || password.isEmpty()) {
             Toast.makeText(this,"Lütfen E-Posta ve Şifrenizi Doğru Şekilde Giriniz. \n Şifreniz en az 6 karakterden oluşmalıdır",Toast.LENGTH_LONG).show()
         }
+        else if (!aydinlatmaMetniOnay.isChecked) {
+            Toast.makeText(this,"Kaydolabilmeniz İçin Aydınlatma Matnini Onaylamanız Gerekmektedir",Toast.LENGTH_LONG).show()
+        }
         else {
             auth.createUserWithEmailAndPassword(mail,password).addOnSuccessListener {
                 intent()
@@ -83,10 +92,45 @@ class LoginPage : AppCompatActivity() {
 
     fun aydinlatmaMetniIcinTikla (view: View) {
 
+        var aydinlatma = LayoutInflater.from(this).inflate(R.layout.activity_aydinlatma_metni,null)
+        aydinlatma.width
+        var alertDialog = AlertDialog.Builder(this)
+
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val width = displayMetrics.widthPixels
+        val height = displayMetrics.heightPixels
+
+        alertDialog.setView(aydinlatma)
+        alertDialog.setPositiveButton("Onay",) { dialog, which ->
+            aydinlatmaMetniOnay.isChecked = true
+        }
+        alertDialog.setNegativeButton("Red",) { dialog, which ->
+            aydinlatmaMetniOnay.isChecked = false
+        }
+        alertDialog.show().window?.setLayout(width*17/20,height*17/20)
     }
 
     fun aydinlatmaMetniOnay (view: View) {
 
+        var aydinlatma = LayoutInflater.from(this).inflate(R.layout.activity_aydinlatma_metni,null)
+        aydinlatma.width
+        var alertDialog = AlertDialog.Builder(this)
+
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val width = displayMetrics.widthPixels
+        val height = displayMetrics.heightPixels
+
+        alertDialog.setView(aydinlatma)
+        alertDialog.setPositiveButton("Onay",) { dialog, which ->
+            aydinlatmaMetniOnay.isChecked = true
+        }
+        alertDialog.setNegativeButton("Red",) { dialog, which ->
+            aydinlatmaMetniOnay.isChecked = false
+        }
+        alertDialog.show().window?.setLayout(width*17/20,height*17/20)
     }
+
 }
 
