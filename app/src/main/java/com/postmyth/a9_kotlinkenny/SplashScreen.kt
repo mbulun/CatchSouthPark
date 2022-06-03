@@ -5,16 +5,10 @@ package com.postmyth.a9_kotlinkenny
 //geçiş             ca-app-pub-8944524190558053/6658599462
 //geçiş test        ca-app-pub-3940256099942544/1033173712
 
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.gms.ads.MobileAds
@@ -38,12 +32,10 @@ class SplashScreen : AppCompatActivity() {
         val handler = Handler()
         handler.postDelayed({
             if (!networkControl.isNetworkAvailable(this)) {
-                println("hereeeeeeeeeeee")
                 Toast.makeText(this@SplashScreen,
                     "Lütfen İnternetinizi Açın, Skorunuzun kaydedilmesi ve para kazanabilmeniz için internet gereklidir. " +
                             "Uygulamayı kapatıp internet açıktan sonra tekrar giriş yapınız.",Toast.LENGTH_LONG).show()
             }else {
-                println("internet var (splash screen)")
                 if (Firebase.auth.currentUser != null) {
                     val intent = Intent(this,MainActivity::class.java)
                     startActivity(intent)

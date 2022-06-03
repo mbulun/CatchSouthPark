@@ -2,12 +2,9 @@ package com.postmyth.a9_kotlinkenny
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
-import android.widget.Scroller
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -38,7 +35,6 @@ class LoginPage : AppCompatActivity() {
         }
 
         if (!networkControl.isNetworkAvailable(this)) {
-            println("hereeeeeeeeeeee")
             Toast.makeText(
                 this@LoginPage,
                 "Lütfen İnternetinizi Açın, Skorunuzun kaydedilmesi ve para kazanabilmeniz için internet gereklidir. " +
@@ -50,7 +46,7 @@ class LoginPage : AppCompatActivity() {
             finish()
         }
     }
-
+    @Suppress("UNUSED_PARAMETER")
     fun giris(view: View) {
         val mail = editTextEmail.text.toString()
         val password = editTextPassword.text.toString()
@@ -65,7 +61,7 @@ class LoginPage : AppCompatActivity() {
             }
         }
     }
-
+    @Suppress("UNUSED_PARAMETER")
     fun kaydol(view: View) {
         val mail = editTextEmail.text.toString()
         val password = editTextPassword.text.toString()
@@ -84,38 +80,17 @@ class LoginPage : AppCompatActivity() {
         }
     }
 
-    fun intent () {
+    private fun intent () {
         val intent = Intent(this@LoginPage,MainActivity::class.java)
         startActivity(intent)
         finish()
     }
-
-    fun aydinlatmaMetniIcinTikla (view: View) {
-
-        var aydinlatma = LayoutInflater.from(this).inflate(R.layout.activity_aydinlatma_metni,null)
-        aydinlatma.width
-        var alertDialog = AlertDialog.Builder(this)
-
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val width = displayMetrics.widthPixels
-        val height = displayMetrics.heightPixels
-
-        alertDialog.setView(aydinlatma)
-        alertDialog.setPositiveButton("Onay",) { dialog, which ->
-            aydinlatmaMetniOnay.isChecked = true
-        }
-        alertDialog.setNegativeButton("Red",) { dialog, which ->
-            aydinlatmaMetniOnay.isChecked = false
-        }
-        alertDialog.show().window?.setLayout(width*17/20,height*17/20)
-    }
-
+    @Suppress("UNUSED_PARAMETER")
     fun aydinlatmaMetniOnay (view: View) {
 
-        var aydinlatma = LayoutInflater.from(this).inflate(R.layout.activity_aydinlatma_metni,null)
+        val aydinlatma = LayoutInflater.from(this).inflate(R.layout.activity_aydinlatma_metni,null)
         aydinlatma.width
-        var alertDialog = AlertDialog.Builder(this)
+        val alertDialog = AlertDialog.Builder(this)
 
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -123,10 +98,10 @@ class LoginPage : AppCompatActivity() {
         val height = displayMetrics.heightPixels
 
         alertDialog.setView(aydinlatma)
-        alertDialog.setPositiveButton("Onay",) { dialog, which ->
+        alertDialog.setPositiveButton("Onay") { dialog, which ->
             aydinlatmaMetniOnay.isChecked = true
         }
-        alertDialog.setNegativeButton("Red",) { dialog, which ->
+        alertDialog.setNegativeButton("Red") { dialog, which ->
             aydinlatmaMetniOnay.isChecked = false
         }
         alertDialog.show().window?.setLayout(width*17/20,height*17/20)

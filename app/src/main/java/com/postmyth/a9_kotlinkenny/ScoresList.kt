@@ -2,41 +2,33 @@ package com.postmyth.a9_kotlinkenny
 
 import android.content.Context
 import android.content.Intent
-import android.os.Binder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.getSystemService
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.postmyth.a9_kotlinkenny.databinding.ActivityScoresListBinding
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_scores_list.*
 import kotlinx.android.synthetic.main.activity_scores_list.button
 import kotlinx.android.synthetic.main.activity_scores_list.button2
 import kotlinx.android.synthetic.main.activity_scores_list.button3
-import kotlinx.android.synthetic.main.recycler_row.*
 import kotlinx.android.synthetic.main.recycler_row.view.*
-import kotlinx.coroutines.delay
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.schedule
 
 class ScoresList : AppCompatActivity() {
 
     private lateinit var binding : ActivityScoresListBinding
     private  lateinit var db : FirebaseFirestore
-    var scoreList30 = ArrayList<scoreData> ()
-    var scoreList60 = ArrayList<scoreData> ()
-    var scoreList120 = ArrayList<scoreData> ()
+    private var scoreList30 = ArrayList<scoreData> ()
+    private var scoreList60 = ArrayList<scoreData> ()
+    private var scoreList120 = ArrayList<scoreData> ()
     var adapter : scoreListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +46,6 @@ class ScoresList : AppCompatActivity() {
         get_db_120()
 
         if (!networkControl.isNetworkAvailable(this)) {
-            println("hereeeeeeeeeeee")
             Toast.makeText(this@ScoresList,
                 "Lütfen İnternetinizi Açın, Skorunuzun kaydedilmesi ve para kazanabilmeniz için internet gereklidir. " +
                         "Uygulamayı kapatıp internet açıktan sonra tekrar giriş yapınız.",Toast.LENGTH_LONG).show()
@@ -65,7 +56,7 @@ class ScoresList : AppCompatActivity() {
 
     }
 
-    fun get_db_30 () {
+    private fun get_db_30 () {
 
         db.collection("Scores30sec").orderBy("score",Query.Direction.DESCENDING).addSnapshotListener { value, error ->
             if(error!=null) {
@@ -85,7 +76,7 @@ class ScoresList : AppCompatActivity() {
             }
         }
     }
-    fun get_db_60 () {
+    private fun get_db_60 () {
 
         db.collection("Scores60sec").orderBy("score",Query.Direction.DESCENDING).addSnapshotListener { value, error ->
             if(error!=null) {
@@ -105,7 +96,7 @@ class ScoresList : AppCompatActivity() {
             }
         }
     }
-    fun get_db_120 () {
+    private fun get_db_120 () {
 
         db.collection("Scores120sec").orderBy("score",Query.Direction.DESCENDING).addSnapshotListener { value, error ->
             if(error!=null) {
@@ -128,7 +119,7 @@ class ScoresList : AppCompatActivity() {
 
     class scoreListAdapter : BaseAdapter {
 
-        var scoreList = ArrayList<scoreData>()
+        private var scoreList = ArrayList<scoreData>()
         var context : Context? = null
 
         constructor(context: Context,scoresList: ArrayList<scoreData>):super() {
@@ -154,21 +145,23 @@ class ScoresList : AppCompatActivity() {
 
         override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
 
-            var inflater = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            var x = inflater.inflate(R.layout.recycler_row,null)
+            val inflater = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val x = inflater.inflate(R.layout.recycler_row,null)
             x.rowScore.text = scoreList[p0].score.toString()
             x.rowUserName.text = scoreList[p0].userName
 
-            if(p0 == 0) x.rowMadal.setImageResource(R.drawable.first)
-            else if(p0 == 1) x.rowMadal.setImageResource(R.drawable.second)
-            else if(p0 == 2) x.rowMadal.setImageResource(R.drawable.third)
-            else if(p0 < 10) x.rowMadal.setImageResource(R.drawable.participate)
+            when {
+                p0 == 0 -> x.rowMadal.setImageResource(R.drawable.first)
+                p0 == 1 -> x.rowMadal.setImageResource(R.drawable.second)
+                p0 == 2 -> x.rowMadal.setImageResource(R.drawable.third)
+                p0 < 10 -> x.rowMadal.setImageResource(R.drawable.participate)
+            }
             return  x
         }
 
     }
 
-    fun scaleButton() {
+    private fun scaleButton() {
         button.scaleX = 1F
         button.scaleY = 1F
         button2.scaleX = 1F
@@ -176,15 +169,15 @@ class ScoresList : AppCompatActivity() {
         button3.scaleX = 1F
         button3.scaleY = 1F
     }
+    @Suppress("UNUSED_PARAMETER")
     fun show30sec (view: View) {
         scaleButton()
         button.scaleX =1.3F
         button.scaleY =1.3F
         adapter = scoreListAdapter(this@ScoresList,scoreList30)
         listview.adapter =adapter
-
-
     }
+    @Suppress("UNUSED_PARAMETER")
     fun show60sec (view: View) {
         scaleButton()
         button2.scaleX =1.3F
@@ -192,6 +185,7 @@ class ScoresList : AppCompatActivity() {
         adapter = scoreListAdapter(this@ScoresList,scoreList60)
         listview.adapter =adapter
     }
+    @Suppress("UNUSED_PARAMETER")
     fun show120sec (view: View) {
         scaleButton()
         button3.scaleX =1.3F

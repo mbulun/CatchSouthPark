@@ -21,22 +21,21 @@
             android:backgroundTint="@color/white"
             android:scrollbars="vertical"
             android:scrollHorizontally="true"
-            android:text=" Oyuncu (Siz) Ve Yapımcı (Postmyth) Arasında Geçerli Olan Gayriresmi Aydınlatma Metni \n\n
-    1-) Catch The Southpark oyunu kullanıcıların reflekslerini geliştirirken aynı zamanda aldıkları skorlar \n ile para kazanmalarını amaçlamaktadır. \n
-    2-) Bu amaçla yapımcı, kullanıcılara mümkün olan en şeffaf şekilde açıklamaları yapacağını, \n kullanıcıları mail veya uygulama içi bildirimler ile bilgilendireceğini garanti eder. Kullanıcılar \n postmyths@gmail.com  mail adresi üzerinden yapımcıya medeni şekilde her türlü hesap sorma ve \n alternatif sunma hakkına sahiptir 😊 \n
-    3-) Ödül para kazanan kullanıcılara kazançları her haftanın Pazartesi günü postmyths@gmail.com \n maili aracılığıyla kendilerine bildirilir ve kazandıkları ödül parayı almaları için kendilerinden IBAN, \n IBAN’ın ait olduğu banka ismi ve IBAN bilgisine sahip hesaptaki tanımlı kişi ismi olmak üzere 3 adet\n bilgi aynı mail ile talep edilir. \n
-    4-) Ödül miktarı her hafta o haftaki rekabetin arttığı orantıda artacaktır. Yani erkenden yerinizi\n kapmanızda fayda var 😊\n
+            android:text="Oyuncu (Siz) Ve Yapımcı (Postmyth) Arasında Geçerli Olan Aydınlatma Metni \n\n
+    1-) Catch The Southpark oyunu kullanıcıların reflekslerini geliştirirken aynı zamanda aldıkları skorlar ile para kazanmalarını amaçlamaktadır. \n
+    2-) Bu amaçla, yapımcı, kullanıcılara mümkün olan en şeffaf şekilde açıklamaları yapacağını, kullanıcıları mail veya uygulama içi bildirimler ile bilgilendireceğini garanti eder. Kullanıcılar postmyths@gmail.com  mail adresi üzerinden yapımcıya medeni şekilde her türlü hesap sorma ve alternatif sunma hakkına sahiptir 😊 \n
+    3-) Ödül para kazanan kullanıcılara kazançları her haftanın Pazartesi günü postmyths@gmail.com maili aracılığıyla kendilerine bildirilir ve kazandıkları ödül parayı almaları için kendilerinden IBAN, IBAN’ın ait olduğu banka ismi ve IBAN bilgisine sahip hesaptaki tanımlı kişi ismi olmak üzere 3 adet bilgi aynı mail ile talep edilir. \n
+    4-) Ödül miktarı her hafta o haftaki rekabetin arttığı orantıda artacaktır. Yani erkenden yerinizi kapmanızda fayda var 😊\n
     5-) Ödül Gelirlerini kaynağı uygulama gelirleri ile ilişkili olacaktır. Bu sebeple ilk çıktığı dönemlerde\n gelirler bir miktar düşük olacak olup, yapımcı sizler için mümkün olduğunca insiyatifli davranacaktır. \n Bu konudaki anlayışınız için şimdiden teşekkür ederiz\n
     6-) 30 saniye, 60 saniye ve 120 saniyelik ödüller her bir süredeki rekabete göre değişmektedir. \n
-    7-) Şuan her bir sıralamada sadece ilk 3 kullanıcıya kazandıkları puan orantısında ödül verilecektir. \n Yani her hafta 9 ayrı ödül verilecektir. Aynı kullanıcı birden çok sürede rekor kırmışsa bu sürelere göre \n birden çok ödül alabilecektir. Uzun vadede her listedeki ilk 10 kullanıcıya ödül verilmesi \n hedeflenmektedir. \n
+    7-) Şuan her bir sıralamada sadece ilk 3 kullanıcıya kazandıkları puan orantısında ödül verilecektir. Yani her hafta 9 ayrı ödül verilecektir. Aynı kullanıcı birden çok sürede rekor kırmışsa bu sürelere göre \n birden çok ödül alabilecektir. Uzun vadede her listedeki ilk 10 kullanıcıya ödül verilmesi \n hedeflenmektedir. \n
     8-)Her pazartesi ödül dağıtımı sonrası eski skor listesi temizlenecek olup yeni listeye geçilecektir. \n
-    9-) Yapımcı başta dağıttığı ödül gelirlerini açıklamayacak olup uygulamanın ileriki versiyonlarında bu\n ödül gelirlerini tüm kullanıcılara açıklamayı hedeflemektedir. \n
-    10-) Bu maddeler konusunda sonuna kadar katı davranılacak olup o hafta ödül alan kullanıcılardan\n dürüstlüğümüzü açıklaması adına uygulamaya Google Play üzerinden yorum yapması rica edilecektir. \n
-    11-) Yapımcı hem kendini hem de kullanıcıları korumak adına uygulama ve ödül sistemi üzerinde her \n türlü değişimi yapma hakkına sahip olacaktır. \n
-    12-) Uygulamada çoklu hesap kullanımı, artniyet, bot kullanımı, SQL sızması, bug tespiti ve bunun \n suistimali vb yöntemler ile hile yapan kullanıcılar tespit edilip hepimizin iyiliği için hesapları sonsuza \n kadar yasaklanacaktır. Bu konuda taviz verilmeyecektir. \n
-    13-) Bu bir samimiyet ve karşılıklı iyi niyet anlaşmasıdır. Yapımcının sizden tek ricası uygulmayı Google \n Play üzerinden değerlendirmenizdir. Anlayışınız için teşekkür eder iyi oyunlar dileriz. \n
--PostMyth
-    "
+    9-) Yapımcı başta dağıttığı ödül gelirlerini açıklamayacak olup uygulamanın ileriki versiyonlarında bu ödül gelirlerini tüm kullanıcılara açıklamayı hedeflemektedir. \n
+    10-) Bu maddeler konusunda sonuna kadar katı davranılacak olup o hafta ödül alan kullanıcılardan dürüstlüğümüzü açıklaması adına uygulamaya Google Play üzerinden yorum yapması rica edilecektir. \n
+    11-) Yapımcı hem kendini hem de kullanıcıları korumak adına uygulama ve ödül sistemi üzerinde her türlü değişimi yapma hakkına sahip olacaktır. \n
+    12-) Uygulamada çoklu hesap kullanımı, artniyet, bot kullanımı, SQL sızması, bug tespiti ve bunun suistimali vb yöntemler ile hile yapan kullanıcılar tespit edilip hepimizin iyiliği için hesapları sonsuza \n kadar yasaklanacaktır. Bu konuda taviz verilmeyecektir. \n
+    13-) Bu bir samimiyet ve karşılıklı iyi niyet anlaşmasıdır. Yapımcının sizden tek ricası uygulmayı Google Play üzerinden değerlendirmenizdir. Anlayışınız için teşekkür eder iyi oyunlar dileriz. \n
+-PostMyth"
             android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"

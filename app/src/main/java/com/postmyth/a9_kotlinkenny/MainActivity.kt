@@ -42,9 +42,7 @@ class MainActivity : AppCompatActivity() {
         db = Firebase.firestore
         firebaseAnalytics = Firebase.analytics
         supportActionBar?.hide()
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.white))
-
-        println(auth.currentUser!!.email)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
 
         val reklamtalebi = AdRequest.Builder().build()
         adView.loadAd(reklamtalebi)
@@ -53,19 +51,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        db.collection("Haftalık Ödül Puan").addSnapshotListener { value, error ->
-            if (value != null) {
-                for (doc in value!!.documents) {
-                    val point = doc.get("Point")
-                    val title = doc.get("Title")
-                    //println("" + point + "  " + title)
-                    binding.usernameText.text = "" + title + " " + point
-                }
-            } else println("value null geliyor")
-        }
 
         if (!networkControl.isNetworkAvailable(this)) {
-            println("hereeeeeeeeeeee")
             Toast.makeText(this@MainActivity,
                 "Lütfen İnternetinizi Açın, Skorunuzun kaydedilmesi ve para kazanabilmeniz için internet gereklidir. " +
                         "Uygulamayı kapatıp internet açıktan sonra tekrar giriş yapınız.",Toast.LENGTH_LONG).show()
@@ -75,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
+    @Suppress("UNUSED_PARAMETER")
     fun basla(view: View) {
 
         if (statusChar && statusTime) {
@@ -103,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun scaleImage() {
+    private fun scaleImage() {
         token.scaleX = 1F
         token.scaleY = 1F
         kyle.scaleX = 1F
@@ -117,6 +104,7 @@ class MainActivity : AppCompatActivity() {
         tweek.scaleX = 1F
         tweek.scaleY = 1F
     }
+    @Suppress("UNUSED_PARAMETER")
     fun token(view: View) {
         degisken = "token"
         statusChar = true
@@ -124,6 +112,7 @@ class MainActivity : AppCompatActivity() {
         token.scaleX = 1.6F
         token.scaleY = 1.6F
     }
+    @Suppress("UNUSED_PARAMETER")
     fun kyle(view: View) {
         degisken = "kyle"
         statusChar = true
@@ -131,6 +120,7 @@ class MainActivity : AppCompatActivity() {
         kyle.scaleX = 1.6F
         kyle.scaleY = 1.6F
     }
+    @Suppress("UNUSED_PARAMETER")
     fun kenny(view: View) {
         degisken = "kenny"
         statusChar = true
@@ -138,13 +128,14 @@ class MainActivity : AppCompatActivity() {
         kenny.scaleX = 1.6F
         kenny.scaleY = 1.6F
     }
+    @Suppress("UNUSED_PARAMETER")
     fun eric(view: View) {
         degisken = "eric"
         statusChar = true
         scaleImage()
         eric.scaleX = 1.6F
         eric.scaleY = 1.6F
-    }
+    }@Suppress("UNUSED_PARAMETER")
     fun stan(view: View) {
         degisken = "stan"
         statusChar = true
@@ -152,6 +143,7 @@ class MainActivity : AppCompatActivity() {
         stan.scaleX = 1.6F
         stan.scaleY = 1.6F
     }
+    @Suppress("UNUSED_PARAMETER")
     fun tweek(view: View) {
         degisken = "tweek"
         statusChar = true
@@ -160,7 +152,7 @@ class MainActivity : AppCompatActivity() {
         tweek.scaleY = 1.6F
     }
 
-    fun scaleButton() {
+    private fun scaleButton() {
         button.scaleX = 1F
         button.scaleY = 1F
         button2.scaleX = 1F
@@ -168,6 +160,7 @@ class MainActivity : AppCompatActivity() {
         button3.scaleX = 1F
         button3.scaleY = 1F
     }
+    @Suppress("UNUSED_PARAMETER")
     fun shortt(view: View) {
         statusTime = true
         toplamZaman = 12300
@@ -176,6 +169,7 @@ class MainActivity : AppCompatActivity() {
         button.scaleY = 1.3F
         zamanDegisken = "Scores30sec"
     }
+    @Suppress("UNUSED_PARAMETER")
     fun midd(view: View) {
         statusTime = true
         toplamZaman = 60300
@@ -184,6 +178,7 @@ class MainActivity : AppCompatActivity() {
         button2.scaleY = 1.3F
         zamanDegisken = "Scores60sec"
     }
+    @Suppress("UNUSED_PARAMETER")
     fun longg(view: View) {
         statusTime = true
         toplamZaman = 120300
@@ -192,15 +187,14 @@ class MainActivity : AppCompatActivity() {
         button3.scaleY = 1.3F
         zamanDegisken = "Scores120sec"
     }
-
+    @Suppress("UNUSED_PARAMETER")
     fun logout(view: View) {
-        println(auth.currentUser!!.email.toString())
         auth.signOut()
         val intent = Intent(this@MainActivity, LoginPage::class.java)
         startActivity(intent)
         finish()
     }
-
+    @Suppress("UNUSED_PARAMETER")
     fun highScoreImage (view: View) {
             val intent = Intent(this@MainActivity,ScoresList::class.java)
             startActivity(intent)

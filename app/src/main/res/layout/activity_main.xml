@@ -185,27 +185,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logout" />
 
-    <TextView
-        android:id="@+id/usernameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Username"
-        android:textColor="#AAAAAA"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:textSize="16sp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        />
 
     <ImageView
         android:id="@+id/highScoreImage"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_margin="16dp"
+        android:layout_margin="12dp"
         android:onClick="highScoreImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameText"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/highscores" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
