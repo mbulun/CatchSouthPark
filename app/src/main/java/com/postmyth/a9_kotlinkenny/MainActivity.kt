@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.gms.ads.AdRequest
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,6 +24,7 @@ var statusTime = false
 var statusChar = false
 private lateinit var auth : FirebaseAuth
 private lateinit var binding : ActivityMainBinding
+private lateinit var firebaseAnalytics: FirebaseAnalytics
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         statusChar = false
         auth = Firebase.auth
         db = Firebase.firestore
+        firebaseAnalytics = Firebase.analytics
         supportActionBar?.hide()
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.white))
 

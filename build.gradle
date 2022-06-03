@@ -8,6 +8,9 @@ buildscript {
     dependencies {
         classpath 'com.google.gms:google-services:4.3.10'
         classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.10, 0.99.99]'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.0'  //firebase crash eklentisi
+        classpath 'com.android.tools.build:gradle:3.4.0'    // firebase performans
+        classpath 'com.google.firebase:perf-plugin:1.4.1'   // firebase performans
     }
 }
 
