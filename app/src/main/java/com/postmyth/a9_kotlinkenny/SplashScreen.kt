@@ -1,12 +1,27 @@
 package com.postmyth.a9_kotlinkenny
+// uygulama kimliği ca-app-pub-8944524190558053~7732007984
+// banner           ca-app-pub-8944524190558053/8939850706
+// banner test      ca-app-pub-3940256099942544/6300978111
+//geçiş             ca-app-pub-8944524190558053/6658599462
+//geçiş test        ca-app-pub-3940256099942544/1033173712
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+
+val networkControl = NetworkControl()
 
 class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,19 +31,29 @@ class SplashScreen : AppCompatActivity() {
         supportActionBar?.hide()
         window.statusBarColor = ContextCompat.getColor(this,R.color.black)
 
+        MobileAds.initialize(this) {}
+        // Üretim reklamlarını tıklamak, geçersiz trafiğin yol açtığı bir politika ihlaline neden olabilir.
+        //Uygulama geliştirme ve testi sırasında, AdMob politikasını ihlal etmeden uygulama kodunuzu doğrulamak için demo reklamları veya test cihazlarını kullanın.
+
         val handler = Handler()
         handler.postDelayed({
-
-            if (Firebase.auth.currentUser != null) {
-                val intent = Intent(this,MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                val intent = Intent(this, LoginPage::class.java)
-                startActivity(intent)
-                finish()
+            if (!networkControl.isNetworkAvailable(this)) {
+                println("hereeeeeeeeeeee")
+                Toast.makeText(this@SplashScreen,
+                    "Lütfen İnternetinizi Açın, Skorunuzun kaydedilmesi ve para kazanabilmeniz için internet gereklidir. " +
+                            "Uygulamayı kapatıp internet açıktan sonra tekrar giriş yapınız.",Toast.LENGTH_LONG).show()
+            }else {
+                println("internet var (splash screen)")
+                if (Firebase.auth.currentUser != null) {
+                    val intent = Intent(this,MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    val intent = Intent(this, LoginPage::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
-
         },2000)
     }
 }

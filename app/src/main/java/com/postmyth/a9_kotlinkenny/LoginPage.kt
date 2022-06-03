@@ -37,6 +37,16 @@ class LoginPage : AppCompatActivity() {
             intent()
         }
 
+        if (!networkControl.isNetworkAvailable(this)) {
+            println("hereeeeeeeeeeee")
+            Toast.makeText(this@LoginPage,
+                "Lütfen İnternetinizi Açın, Skorunuzun kaydedilmesi ve para kazanabilmeniz için internet gereklidir. " +
+                        "Uygulamayı kapatıp internet açıktan sonra tekrar giriş yapınız.",Toast.LENGTH_LONG).show()
+            val intent = Intent(this,SplashScreen::class.java)
+            startActivity(intent)
+            finish()
+        }
+
     }
 
     fun giris(view: View) {

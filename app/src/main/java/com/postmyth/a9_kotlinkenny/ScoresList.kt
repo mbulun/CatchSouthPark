@@ -1,6 +1,7 @@
 package com.postmyth.a9_kotlinkenny
 
 import android.content.Context
+import android.content.Intent
 import android.os.Binder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -51,6 +52,17 @@ class ScoresList : AppCompatActivity() {
         get_db_30()
         get_db_60()
         get_db_120()
+
+        if (!networkControl.isNetworkAvailable(this)) {
+            println("hereeeeeeeeeeee")
+            Toast.makeText(this@ScoresList,
+                "Lütfen İnternetinizi Açın, Skorunuzun kaydedilmesi ve para kazanabilmeniz için internet gereklidir. " +
+                        "Uygulamayı kapatıp internet açıktan sonra tekrar giriş yapınız.",Toast.LENGTH_LONG).show()
+            val intent = Intent(this,SplashScreen::class.java)
+            startActivity(intent)
+            finish()
+        }
+
     }
 
     fun get_db_30 () {

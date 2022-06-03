@@ -1,4 +1,5 @@
 package com.postmyth.a9_kotlinkenny
+import android.content.Intent
 import android.graphics.Color
 import android.os.*
 import android.util.DisplayMetrics
@@ -51,6 +52,16 @@ class GameScreen : AppCompatActivity() {
         if (zamanDegisken == "Scores30sec")  get_db_30()
         else if (zamanDegisken == "Scores60sec") get_db_60()
         else if (zamanDegisken == "Scores120sec") get_db_120()
+
+        if (!networkControl.isNetworkAvailable(this)) {
+            println("hereeeeeeeeeeee")
+            Toast.makeText(this@GameScreen,
+                "Lütfen İnternetinizi Açın, Skorunuzun kaydedilmesi ve para kazanabilmeniz için internet gereklidir. " +
+                        "Uygulamayı kapatıp internet açıktan sonra tekrar giriş yapınız.",Toast.LENGTH_LONG).show()
+            val intent = Intent(this,SplashScreen::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     override fun onPause() {

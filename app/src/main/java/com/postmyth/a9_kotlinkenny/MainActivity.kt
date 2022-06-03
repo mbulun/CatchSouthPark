@@ -1,9 +1,4 @@
 package com.postmyth.a9_kotlinkenny
-// uygulama kimliği ca-app-pub-8944524190558053~7732007984
-// banner           ca-app-pub-8944524190558053/8939850706
-// banner test      ca-app-pub-3940256099942544/6300978111
-//geçiş             ca-app-pub-8944524190558053/6658599462
-//geçiş test        ca-app-pub-3940256099942544/1033173712
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +7,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -48,9 +42,6 @@ class MainActivity : AppCompatActivity() {
 
         println(auth.currentUser!!.email)
 
-        MobileAds.initialize(this) {}
-        // Üretim reklamlarını tıklamak, geçersiz trafiğin yol açtığı bir politika ihlaline neden olabilir.
-        //Uygulama geliştirme ve testi sırasında, AdMob politikasını ihlal etmeden uygulama kodunuzu doğrulamak için demo reklamları veya test cihazlarını kullanın.
         val reklamtalebi = AdRequest.Builder().build()
         adView.loadAd(reklamtalebi)
 
@@ -68,6 +59,17 @@ class MainActivity : AppCompatActivity() {
                 }
             } else println("value null geliyor")
         }
+
+        if (!networkControl.isNetworkAvailable(this)) {
+            println("hereeeeeeeeeeee")
+            Toast.makeText(this@MainActivity,
+                "Lütfen İnternetinizi Açın, Skorunuzun kaydedilmesi ve para kazanabilmeniz için internet gereklidir. " +
+                        "Uygulamayı kapatıp internet açıktan sonra tekrar giriş yapınız.",Toast.LENGTH_LONG).show()
+            val intent = Intent(this,SplashScreen::class.java)
+            startActivity(intent)
+            finish()
+        }
+
     }
 
     fun basla(view: View) {
