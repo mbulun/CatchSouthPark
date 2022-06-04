@@ -125,10 +125,6 @@
             android:src="@drawable/tweek">
         </ImageView>
 
-
-
-
-
     </GridLayout>
 
     <androidx.gridlayout.widget.GridLayout

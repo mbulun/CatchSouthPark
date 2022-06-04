@@ -8,12 +8,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.ads.AdRequest
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_game_screen.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 lateinit var countDownTimer : CountDownTimer
 private lateinit var auth : FirebaseAuth
@@ -32,6 +34,11 @@ class GameScreen : AppCompatActivity() {
     private var highest60 = 0
     private var highest120 = 0
     var timeLeft = 0
+    private var enBasla = 0
+    private var enSon = 0
+    private var boyBasla = 0
+    private var boySon = 0
+    var katsayi = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +54,11 @@ class GameScreen : AppCompatActivity() {
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         val width = displayMetrics.widthPixels
         val height = displayMetrics.heightPixels
-        characterLocation(width, height)
+        enBasla = (width * (0.05)).toInt() + 100
+        enSon = (width * (0.95)).toInt() - imageView.height - 150
+        boyBasla = (height * (0.15)).toInt() + 100
+        boySon = (height * (0.85)).toInt() - imageView.width - 150
+        characterLocation()
 
         when (zamanDegisken) {
             "Scores30sec" -> get_db_30()
@@ -63,6 +74,10 @@ class GameScreen : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+        val reklamtalebi = AdRequest.Builder().build()
+        adView2.loadAd(reklamtalebi)
+
     }
     override fun onPause() {
         handler.removeCallbacks(runnable)
@@ -126,9 +141,10 @@ class GameScreen : AppCompatActivity() {
                 }
 
                 if (speed > 600) speed -= score * 2
-                else if (speed in 250..600) speed -= 10
+                else if (speed in 300..600) speed -= 10
             }
             else {
+                println("game fun: cezaya dokundun")
                 handler.removeCallbacks(runnable)
                 countDownTimer.cancel()
                 val alert = AlertDialog.Builder(this)
@@ -137,24 +153,21 @@ class GameScreen : AppCompatActivity() {
                     kalanZaman(timeLeft)
                     handler.post(runnable)
                 }
+                alert.setNegativeButton("Hayır") {dialog, which ->
+                    finish()
+                }
                 alert.show()
             }
         }
     }
 
-    private fun characterLocation(width: Int, height: Int) {
+    private fun characterLocation() {
         runnable = Runnable {
-            val enBasla = (width * (0.05)).toInt() + 100
-            val enSon = (width * (0.95)).toInt() - imageView.height - 50
-            val boyBasla = (height * (0.15)).toInt() + 100
-            val boySon = (height * (0.85)).toInt() - imageView.width - 50
 
-            imageView.x = ((enBasla..enSon).shuffled()
-                .last() / (imageView.width / 2) * (imageView.width / 2)).toFloat()
-            imageView.y = ((boyBasla..boySon).shuffled()
-                .last() / (imageView.height / 2) * (imageView.height / 2)).toFloat()
+            imageView.x = ((enBasla..enSon).shuffled().last()).toFloat()
+            imageView.y = ((boyBasla..boySon).shuffled().last()).toFloat()
 
-            if (15 > (0..100).shuffled().last()) {
+            if (50 > (0..100).shuffled().last()) {
                 imageView.setColorFilter(Color.argb(100, 255, 0, 0))
                 ceza = true
             } else {
@@ -169,25 +182,11 @@ class GameScreen : AppCompatActivity() {
     private fun kalanZaman (kalan : Int) {
 
         countDownTimer = object : CountDownTimer(kalan.toLong(), 1000) {
-
             override fun onFinish() {
 
                 handler.removeCallbacks(runnable)
                 gameOver = true
-
-                val alert = AlertDialog.Builder(this@GameScreen)
-                alert.setTitle("Oyun Bitti")
-                alert.setMessage("Şansını Tekrar Denemek İster Misin?")
-                alert.setIcon(R.drawable.pcprincipal)
-
-                alert.setPositiveButton("Evet") {dialog, which ->
-                    this@GameScreen.recreate()
-                }
-
-                alert.setNegativeButton("Hayır") {dialog, which ->
-                    finish()
-                }
-                alert.show()
+                alertCall ()
             }
             override fun onTick(p0: Long) {
                 kalan!=kalan-1000
@@ -195,7 +194,6 @@ class GameScreen : AppCompatActivity() {
                 timer.max = toplamZaman
                 timer.incrementProgressBy(1000)
             }
-
         }
          countDownTimer.start()
      }
@@ -224,7 +222,7 @@ class GameScreen : AppCompatActivity() {
                     textViewHigh.text = "En Yüksek Skorun $highest30"
                 }
                 else if (value?.get("score")==null) {
-                    textViewHigh.text = "Henüz Bir Skorun Yok, Hemen Karaktere Dokun !"
+                    //buraya ilk oyuna özel bir şey eklenebilir
                 }
             }
         }
@@ -263,4 +261,32 @@ class GameScreen : AppCompatActivity() {
             }
         }
     }
+
+    fun alertCall () {
+        val alert = AlertDialog.Builder(this@GameScreen)
+        alert.setTitle("Oyun Bitti")
+        alert.setMessage("Şansını Tekrar Denemek İster Misin?")
+        alert.setIcon(R.drawable.pcprincipal)
+        alert.setPositiveButton("Evet") {dialog, which ->
+            this@GameScreen.recreate()
+        }
+        alert.setNeutralButton("süremi uzat") {dialog, which ->
+            handler.post(runnable)
+            if(katsayi>3) katsayi--
+            when (zamanDegisken) {
+                "Scores30sec" -> timeLeft = katsayi*1000
+                "Scores60sec" -> timeLeft = katsayi*2000
+                "Scores120sec" -> timeLeft = katsayi*4000
+            }
+            println(katsayi)
+            gameOver = false
+            kalanZaman(timeLeft)
+        }
+        alert.setNeutralButtonIcon(getDrawable(R.drawable.addtime))
+        alert.setNegativeButton("Hayır") {dialog, which ->
+            finish()
+        }
+        alert.show()
+    }
+
 }

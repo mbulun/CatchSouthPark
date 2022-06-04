@@ -1,9 +1,8 @@
 package com.postmyth.a9_kotlinkenny
-// uygulama kimliği ca-app-pub-8944524190558053~7732007984
-// banner           ca-app-pub-8944524190558053/8939850706
-// banner test      ca-app-pub-3940256099942544/6300978111
-//geçiş             ca-app-pub-8944524190558053/6658599462
-//geçiş test        ca-app-pub-3940256099942544/1033173712
+// uygulama kimliği  ca-app-pub-8944524190558053~7732007984
+// banner test       ca-app-pub-3940256099942544/6300978111
+// geçiş test        ca-app-pub-3940256099942544/1033173712
+// ödüllü test       ca-app-pub-3940256099942544/5224354917
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

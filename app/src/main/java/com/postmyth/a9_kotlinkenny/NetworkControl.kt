@@ -16,15 +16,12 @@ class NetworkControl () {
             if (capabilities != null) {
                 when {
                     capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
-                        println("hücresel veri kullanılıyor")
                         return true
                     }
                     capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
-                        println("wifi kullanılıyor")
                         return true
                     }
                     capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
-                        println("ethernet kullanılıyor")
                         return true
                     }
                 }

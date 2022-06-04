@@ -163,7 +163,7 @@ class MainActivity : AppCompatActivity() {
     @Suppress("UNUSED_PARAMETER")
     fun shortt(view: View) {
         statusTime = true
-        toplamZaman = 12300
+        toplamZaman = 30300
         scaleButton()
         button.scaleX = 1.3F
         button.scaleY = 1.3F
