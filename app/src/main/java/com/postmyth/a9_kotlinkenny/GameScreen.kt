@@ -1,21 +1,29 @@
 package com.postmyth.a9_kotlinkenny
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.*
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.OnUserEarnedRewardListener
+import com.google.android.gms.ads.rewarded.RewardItem
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_game_screen.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 lateinit var countDownTimer : CountDownTimer
 private lateinit var auth : FirebaseAuth
@@ -40,7 +48,10 @@ class GameScreen : AppCompatActivity() {
     private var boySon = 0
     var katsayi = 10
 
+    private var mRewardedAd: RewardedAd? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_screen)
         supportActionBar?.hide()
@@ -49,6 +60,7 @@ class GameScreen : AppCompatActivity() {
         db = Firebase.firestore
         kalanZaman(toplamZaman)
         character()
+        loadAd ()
 
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -150,15 +162,41 @@ class GameScreen : AppCompatActivity() {
                 val alert = AlertDialog.Builder(this)
                 alert.setMessage("Kırmızıyken Dokunmaman Gerekiyordu   :( Neyse Ki Bir Reklam İle Kaldığın Yerden Devam Edebilirsin")
                 alert.setPositiveButton("Hemen İzle") {dialog, which ->
-                    kalanZaman(timeLeft)
-                    handler.post(runnable)
+
+                    mRewardedAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+                        override fun onAdShowedFullScreenContent() {
+                            // Called when ad is shown.
+                            println("Ad was shown. Kırmızı")
+                            loadAd()
+                        }
+
+                        override fun onAdDismissedFullScreenContent() {
+                            // Called when ad is dismissed.
+                            // Set the ad reference to null so you don't show the ad a second time.
+                            kalanZaman(timeLeft)
+                            handler.post(runnable)
+                            println("Ad was dismissed. Kırmızı")
+                        }
+                    }
+
+                    if (mRewardedAd != null) {
+                        mRewardedAd?.show(this, OnUserEarnedRewardListener() {
+                            fun onUserEarnedReward(rewardItem: RewardItem) {
+                                var rewardAmount = rewardItem.amount
+                                var rewardType = rewardItem.type
+                                println("User earned the reward.")
+                            }
+                        })
+                    } else {
+                        println("The rewarded ad wasn't ready yet.")
+                    }
                 }
                 alert.setNegativeButton("Hayır") {dialog, which ->
                     finish()
                 }
                 alert.show()
             }
-        }
+        } else alertCall()
     }
 
     private fun characterLocation() {
@@ -239,7 +277,7 @@ class GameScreen : AppCompatActivity() {
                     textViewHigh.text = "En Yüksek Skorun $highest60"
                 }
                 else if (value?.get("score")==null) {
-                    textViewHigh.text = "Henüz Bir Skorun Yok, Hemen Karaktere Dokun !"
+                    //textViewHigh.text = "Henüz Bir Skorun Yok, Hemen Karaktere Dokun !"
                 }
             }
         }
@@ -256,7 +294,7 @@ class GameScreen : AppCompatActivity() {
                     textViewHigh.text = "En Yüksek Skorun $highest120"
                 }
                 else if (value?.get("score")==null) {
-                    textViewHigh.text = "Henüz Bir Skorun Yok, Hemen Karaktere Dokun !"
+                    //textViewHigh.text = "Henüz Bir Skorun Yok, Hemen Karaktere Dokun !"
                 }
             }
         }
@@ -265,28 +303,72 @@ class GameScreen : AppCompatActivity() {
     fun alertCall () {
         val alert = AlertDialog.Builder(this@GameScreen)
         alert.setTitle("Oyun Bitti")
-        alert.setMessage("Şansını Tekrar Denemek İster Misin?")
+        alert.setMessage("Şansını Tekrar Denemek İster Misin? Dilersen Ek Süreyi Seçip Reklam Sonrası Kaldığın Yerden Devam Edebilirsin")
         alert.setIcon(R.drawable.pcprincipal)
-        alert.setPositiveButton("Evet") {dialog, which ->
+        alert.setPositiveButton("✓") {dialog, which ->
             this@GameScreen.recreate()
         }
-        alert.setNeutralButton("süremi uzat") {dialog, which ->
-            handler.post(runnable)
-            if(katsayi>3) katsayi--
-            when (zamanDegisken) {
-                "Scores30sec" -> timeLeft = katsayi*1000
-                "Scores60sec" -> timeLeft = katsayi*2000
-                "Scores120sec" -> timeLeft = katsayi*4000
+        alert.setNeutralButton("Ek Süre") {dialog, which ->
+
+            mRewardedAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+                override fun onAdShowedFullScreenContent() {
+                    // Called when ad is shown.
+                    println("Ad was shown.")
+                    loadAd()
+                }
+
+                override fun onAdDismissedFullScreenContent() {
+                    // Called when ad is dismissed.
+                    // Set the ad reference to null so you don't show the ad a second time.
+                    handler.post(runnable)
+                    if(katsayi>3) katsayi--
+                    when (zamanDegisken) {
+                        "Scores30sec" -> timeLeft = katsayi*1000
+                        "Scores60sec" -> timeLeft = katsayi*2000
+                        "Scores120sec" -> timeLeft = katsayi*4000
+                    }
+                    println(katsayi)
+                    gameOver = false
+                    kalanZaman(timeLeft)
+                    println("Ad was dismissed.")
+                }
             }
-            println(katsayi)
-            gameOver = false
-            kalanZaman(timeLeft)
+
+            if (mRewardedAd != null) {
+                mRewardedAd?.show(this, OnUserEarnedRewardListener() {
+                    fun onUserEarnedReward(rewardItem: RewardItem) {
+                        var rewardAmount = rewardItem.amount
+                        var rewardType = rewardItem.type
+                        println("User earned the reward.")
+                    }
+                })
+            } else {
+                println("The rewarded ad wasn't ready yet.")
+            }
+
         }
         alert.setNeutralButtonIcon(getDrawable(R.drawable.addtime))
-        alert.setNegativeButton("Hayır") {dialog, which ->
+        alert.setNegativeButton("X") {dialog, which ->
             finish()
         }
         alert.show()
+    }
+
+    fun loadAd () {
+
+        var adRequest = AdRequest.Builder().build()
+
+        RewardedAd.load(this,"ca-app-pub-3940256099942544/5224354917", adRequest, object : RewardedAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                println(adError?.message)
+                mRewardedAd = null
+            }
+
+            override fun onAdLoaded(rewardedAd: RewardedAd) {
+                println("Ad was loaded.")
+                mRewardedAd = rewardedAd
+            }
+        })
     }
 
 }
