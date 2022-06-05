@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SouthPark Catch</string>
+    <string name="app_name">Catch Southpark - Oyna &amp; Kazan</string>
     <string name="secondActivity">GameScreen</string>
     <string name="title_activity_score_lists">ScoreLists</string>
     <!-- Strings used for fragments for navigation -->
