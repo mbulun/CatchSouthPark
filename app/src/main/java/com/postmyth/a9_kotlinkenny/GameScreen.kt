@@ -28,6 +28,10 @@ import kotlinx.android.synthetic.main.activity_game_screen.*
 lateinit var countDownTimer : CountDownTimer
 private lateinit var auth : FirebaseAuth
 var scoreMap = hashMapOf<String,Any>()
+var highest30 = 0
+var highest60 = 0
+var highest120 = 0
+
 
 class GameScreen : AppCompatActivity() {
 
@@ -38,9 +42,6 @@ class GameScreen : AppCompatActivity() {
     private var speed = 800
     var gameOver = false
     private var ceza = false
-    private var highest30 = 0
-    private var highest60 = 0
-    private var highest120 = 0
     var timeLeft = 0
     private var enBasla = 0
     private var enSon = 0
@@ -51,7 +52,7 @@ class GameScreen : AppCompatActivity() {
     private var mRewardedAd: RewardedAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        //println("mobile phone test")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_screen)
         supportActionBar?.hide()
@@ -156,17 +157,18 @@ class GameScreen : AppCompatActivity() {
                 else if (speed in 300..600) speed -= 10
             }
             else {
-                println("game fun: cezaya dokundun")
+                //println("game fun: cezaya dokundun")
                 handler.removeCallbacks(runnable)
                 countDownTimer.cancel()
                 val alert = AlertDialog.Builder(this)
-                alert.setMessage("Kırmızıyken Dokunmaman Gerekiyordu   :( Neyse Ki Bir Reklam İle Kaldığın Yerden Devam Edebilirsin")
+                alert.setMessage("Kırmızıyken Dokunmaman Gerekiyordu   :( Neyse Ki Bir Reklam İle Kaldığın Yerden Devam Edebilirsin" +
+                        "(Reklam gösterimi için Wİ-Fİ bağlantısı gerekebilir)")
                 alert.setPositiveButton("Hemen İzle") {dialog, which ->
 
                     mRewardedAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
                         override fun onAdShowedFullScreenContent() {
                             // Called when ad is shown.
-                            println("Ad was shown. Kırmızı")
+                            //println("Ad was shown. Kırmızı")
                             loadAd()
                         }
 
@@ -175,7 +177,7 @@ class GameScreen : AppCompatActivity() {
                             // Set the ad reference to null so you don't show the ad a second time.
                             kalanZaman(timeLeft)
                             handler.post(runnable)
-                            println("Ad was dismissed. Kırmızı")
+                            //println("Ad was dismissed. Kırmızı")
                         }
                     }
 
@@ -184,11 +186,11 @@ class GameScreen : AppCompatActivity() {
                             fun onUserEarnedReward(rewardItem: RewardItem) {
                                 var rewardAmount = rewardItem.amount
                                 var rewardType = rewardItem.type
-                                println("User earned the reward.")
+                                //println("User earned the reward.")
                             }
                         })
                     } else {
-                        println("The rewarded ad wasn't ready yet.")
+                        //println("The rewarded ad wasn't ready yet.")
                     }
                 }
                 alert.setNegativeButton("Hayır") {dialog, which ->
@@ -205,7 +207,7 @@ class GameScreen : AppCompatActivity() {
             imageView.x = ((enBasla..enSon).shuffled().last()).toFloat()
             imageView.y = ((boyBasla..boySon).shuffled().last()).toFloat()
 
-            if (50 > (0..100).shuffled().last()) {
+            if (15 > (0..100).shuffled().last()) {
                 imageView.setColorFilter(Color.argb(100, 255, 0, 0))
                 ceza = true
             } else {
@@ -303,7 +305,8 @@ class GameScreen : AppCompatActivity() {
     fun alertCall () {
         val alert = AlertDialog.Builder(this@GameScreen)
         alert.setTitle("Oyun Bitti")
-        alert.setMessage("Şansını Tekrar Denemek İster Misin? Dilersen Ek Süreyi Seçip Reklam Sonrası Kaldığın Yerden Devam Edebilirsin")
+        alert.setMessage("Şansını Tekrar Denemek İster Misin? Dilersen Ek Süreyi Seçip Reklam Sonrası Kaldığın Yerden Devam Edebilirsin. " +
+                "(Reklam gösterimi için Wİ-Fİ bağlantısı gerekebilir)")
         alert.setIcon(R.drawable.pcprincipal)
         alert.setPositiveButton("✓") {dialog, which ->
             this@GameScreen.recreate()
@@ -313,7 +316,7 @@ class GameScreen : AppCompatActivity() {
             mRewardedAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
                 override fun onAdShowedFullScreenContent() {
                     // Called when ad is shown.
-                    println("Ad was shown.")
+                    //println("Ad was shown.")
                     loadAd()
                 }
 
@@ -327,10 +330,10 @@ class GameScreen : AppCompatActivity() {
                         "Scores60sec" -> timeLeft = katsayi*2000
                         "Scores120sec" -> timeLeft = katsayi*4000
                     }
-                    println(katsayi)
+                    //println(katsayi)
                     gameOver = false
                     kalanZaman(timeLeft)
-                    println("Ad was dismissed.")
+                    //println("Ad was dismissed.")
                 }
             }
 
@@ -339,13 +342,19 @@ class GameScreen : AppCompatActivity() {
                     fun onUserEarnedReward(rewardItem: RewardItem) {
                         var rewardAmount = rewardItem.amount
                         var rewardType = rewardItem.type
-                        println("User earned the reward.")
+                        //println("User earned the reward.")
                     }
                 })
             } else {
-                println("The rewarded ad wasn't ready yet.")
+                //println("The rewarded ad wasn't ready yet.")
+                mRewardedAd?.show(this, OnUserEarnedRewardListener() {
+                    fun onUserEarnedReward(rewardItem: RewardItem) {
+                        var rewardAmount = rewardItem.amount
+                        var rewardType = rewardItem.type
+                        //println("User earned the reward.")
+                    }
+                })
             }
-
         }
         alert.setNeutralButtonIcon(getDrawable(R.drawable.addtime))
         alert.setNegativeButton("X") {dialog, which ->
@@ -356,16 +365,19 @@ class GameScreen : AppCompatActivity() {
 
     fun loadAd () {
 
+        //println("load ad fun called")
+
         var adRequest = AdRequest.Builder().build()
 
-        RewardedAd.load(this,"ca-app-pub-3940256099942544/5224354917", adRequest, object : RewardedAdLoadCallback() {
+        RewardedAd.load(this,"ca-app-pub-8944524190558053/3353552300", adRequest, object : RewardedAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
-                println(adError?.message)
+                //println(adError.message)
                 mRewardedAd = null
+                //println("here")
             }
 
             override fun onAdLoaded(rewardedAd: RewardedAd) {
-                println("Ad was loaded.")
+                //println("Ad was loaded.")
                 mRewardedAd = rewardedAd
             }
         })

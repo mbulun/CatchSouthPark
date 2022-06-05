@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.auth.FirebaseAuth
@@ -16,6 +19,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.postmyth.a9_kotlinkenny.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 var degisken = ""
 var zamanDegisken = "secilmedi"
@@ -25,6 +30,8 @@ var statusChar = false
 private lateinit var auth : FirebaseAuth
 private lateinit var binding : ActivityMainBinding
 private lateinit var firebaseAnalytics: FirebaseAnalytics
+var mInterstitialAd: InterstitialAd? = null
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,6 +54,8 @@ class MainActivity : AppCompatActivity() {
         val reklamtalebi = AdRequest.Builder().build()
         adView.loadAd(reklamtalebi)
 
+        loadAd()
+
         }
 
     override fun onResume() {
@@ -62,12 +71,35 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    @Suppress("UNUSED_PARAMETER")
+
     fun basla(view: View) {
 
         if (statusChar && statusTime) {
-            val oyunaBasla = Intent(applicationContext, GameScreen::class.java)
-            startActivity(oyunaBasla)
+
+            if(mInterstitialAd != null) {
+                mInterstitialAd?.show(this)
+                println("REKLAM IS HERE")
+            } else {
+                println("The interstitial ad wasn't ready yet.")
+            }
+
+            mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+                override fun onAdDismissedFullScreenContent() {
+                    //reklam kapatılınca olacak şey
+                    println("Ad was dismissed.")
+                    loadAd()
+
+                    val oyunaBasla = Intent(applicationContext, GameScreen::class.java)
+                    startActivity(oyunaBasla)
+                }
+
+                override fun onAdShowedFullScreenContent() {
+                    //Reklam gösterilirken olacak şey
+                    println("Ad showed fullscreen content")
+                    mInterstitialAd = null
+                }
+            }
+
         } else if (statusTime) {
             Toast.makeText(
                 this@MainActivity,
@@ -87,7 +119,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
         }
-
     }
 
     private fun scaleImage() {
@@ -104,7 +135,6 @@ class MainActivity : AppCompatActivity() {
         tweek.scaleX = 1F
         tweek.scaleY = 1F
     }
-    @Suppress("UNUSED_PARAMETER")
     fun token(view: View) {
         degisken = "token"
         statusChar = true
@@ -112,7 +142,6 @@ class MainActivity : AppCompatActivity() {
         token.scaleX = 1.6F
         token.scaleY = 1.6F
     }
-    @Suppress("UNUSED_PARAMETER")
     fun kyle(view: View) {
         degisken = "kyle"
         statusChar = true
@@ -120,7 +149,6 @@ class MainActivity : AppCompatActivity() {
         kyle.scaleX = 1.6F
         kyle.scaleY = 1.6F
     }
-    @Suppress("UNUSED_PARAMETER")
     fun kenny(view: View) {
         degisken = "kenny"
         statusChar = true
@@ -128,14 +156,13 @@ class MainActivity : AppCompatActivity() {
         kenny.scaleX = 1.6F
         kenny.scaleY = 1.6F
     }
-    @Suppress("UNUSED_PARAMETER")
     fun eric(view: View) {
         degisken = "eric"
         statusChar = true
         scaleImage()
         eric.scaleX = 1.6F
         eric.scaleY = 1.6F
-    }@Suppress("UNUSED_PARAMETER")
+    }
     fun stan(view: View) {
         degisken = "stan"
         statusChar = true
@@ -143,7 +170,6 @@ class MainActivity : AppCompatActivity() {
         stan.scaleX = 1.6F
         stan.scaleY = 1.6F
     }
-    @Suppress("UNUSED_PARAMETER")
     fun tweek(view: View) {
         degisken = "tweek"
         statusChar = true
@@ -160,16 +186,14 @@ class MainActivity : AppCompatActivity() {
         button3.scaleX = 1F
         button3.scaleY = 1F
     }
-    @Suppress("UNUSED_PARAMETER")
     fun shortt(view: View) {
         statusTime = true
-        toplamZaman = 5300
+        toplamZaman = 30300
         scaleButton()
         button.scaleX = 1.3F
         button.scaleY = 1.3F
         zamanDegisken = "Scores30sec"
     }
-    @Suppress("UNUSED_PARAMETER")
     fun midd(view: View) {
         statusTime = true
         toplamZaman = 60300
@@ -178,7 +202,6 @@ class MainActivity : AppCompatActivity() {
         button2.scaleY = 1.3F
         zamanDegisken = "Scores60sec"
     }
-    @Suppress("UNUSED_PARAMETER")
     fun longg(view: View) {
         statusTime = true
         toplamZaman = 120300
@@ -187,19 +210,57 @@ class MainActivity : AppCompatActivity() {
         button3.scaleY = 1.3F
         zamanDegisken = "Scores120sec"
     }
-    @Suppress("UNUSED_PARAMETER")
     fun logout(view: View) {
         auth.signOut()
         val intent = Intent(this@MainActivity, LoginPage::class.java)
         startActivity(intent)
         finish()
     }
-    @Suppress("UNUSED_PARAMETER")
     fun highScoreImage (view: View) {
-            val intent = Intent(this@MainActivity,ScoresList::class.java)
-            startActivity(intent)
+
+        if(mInterstitialAd != null) {
+            mInterstitialAd?.show(this)
+            println("REKLAM IS HERE")
+        } else {
+            println("The interstitial ad wasn't ready yet.")
+        }
+
+        mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
+                //reklam kapatılınca olacak şey
+                println("Ad was dismissed.")
+                loadAd()
+
+                val intent = Intent(this@MainActivity,ScoresList::class.java)
+                startActivity(intent)
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                //Reklam gösterilirken olacak şey
+                println("Ad showed fullscreen content")
+                mInterstitialAd = null
+            }
+        }
+
     }
 
+    fun loadAd () {
+        var adRequest = AdRequest.Builder().build()
+
+        println("adLoad is called")
+
+        InterstitialAd.load(this,"ca-app-pub-8944524190558053/6548376065", adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                println(adError?.message)
+                mInterstitialAd = null
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                println("Ad was loaded.")
+                mInterstitialAd = interstitialAd
+            }
+        })
+    }
 }
 
 

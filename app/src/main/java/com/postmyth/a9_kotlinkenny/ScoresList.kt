@@ -2,6 +2,7 @@ package com.postmyth.a9_kotlinkenny
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -44,6 +47,7 @@ class ScoresList : AppCompatActivity() {
         get_db_30()
         get_db_60()
         get_db_120()
+
 
         if (!networkControl.isNetworkAvailable(this)) {
             Toast.makeText(this@ScoresList,
@@ -121,10 +125,12 @@ class ScoresList : AppCompatActivity() {
 
         private var scoreList = ArrayList<scoreData>()
         var context : Context? = null
+        lateinit var auth : FirebaseAuth
 
         constructor(context: Context,scoresList: ArrayList<scoreData>):super() {
             this.scoreList = scoresList
             this.context = context
+            this.auth = Firebase.auth
         }
 
         override fun getCount(): Int {
@@ -150,6 +156,28 @@ class ScoresList : AppCompatActivity() {
             x.rowScore.text = scoreList[p0].score.toString()
             x.rowUserName.text = scoreList[p0].userName
 
+            /*
+            if (zamanDegisken == "Scores30sec") {
+                if (x.rowUserName.text.toString() == auth.currentUser!!.email!!.substringBefore("@")
+                    && x.rowScore.text.toString().toInt() == highest30 ) {
+                    x.setBackgroundColor(Color.parseColor("#FFFFBB33"))
+                }
+            }
+            if (zamanDegisken == "Scores60sec") {
+                if (x.rowUserName.text.toString() == auth.currentUser!!.email!!.substringBefore("@")
+                    && x.rowScore.text.toString().toInt() == highest60 ) {
+                    x.setBackgroundColor(Color.parseColor("#FFFFBB33"))
+                }
+            }
+            if (zamanDegisken == "Scores120sec") {
+                if (x.rowUserName.text.toString() == auth.currentUser!!.email!!.substringBefore("@")
+                    && x.rowScore.text.toString().toInt() == highest120 ) {
+                    x.setBackgroundColor(Color.parseColor("#FFFFBB33"))
+                }
+            }
+
+             */
+
             when {
                 p0 == 0 -> x.rowMadal.setImageResource(R.drawable.first)
                 p0 == 1 -> x.rowMadal.setImageResource(R.drawable.second)
@@ -158,7 +186,6 @@ class ScoresList : AppCompatActivity() {
             }
             return  x
         }
-
     }
 
     private fun scaleButton() {
