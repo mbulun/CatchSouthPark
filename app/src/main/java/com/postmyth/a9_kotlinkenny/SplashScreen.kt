@@ -20,6 +20,7 @@ class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         println(getResources().getString(R.string.app_name))
+        println(getResources().getString(R.string.app_name))
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
